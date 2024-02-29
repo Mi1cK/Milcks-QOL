@@ -1,6 +1,6 @@
 --- STEAMODDED HEADER
---- MOD_NAME: No More Mouse
---- MOD_ID: nomoremouse
+--- MOD_NAME: Milck QOL
+--- MOD_ID: milkqol
 --- MOD_AUTHOR: [Milck]
 --- MOD_DESCRIPTION: Add keyboard shortcuts to the game
 ----------------------------------------------
@@ -20,9 +20,14 @@ function Controller.key_press_update(self, key, dt)
         ["r"] = 8,
         ["t"] = 10
     }
+    keys_to_ui = {
+        ["z"] = "sort_value",
+        ["x"] = "sort_rank",
+        ["return"] = "play_hand",
+        ["space"] = "discard_hand",
+    }
     if G.STATE == G.STATES.SELECTING_HAND then
-        if key == "1" or key == "2" or key == "3" or key == "4" or key == "5" or key == "q" or key == "w" or key == "e" or
-            key == "r" or key == "t" then
+        if tableContains(keys_to_nums, key) then
             num = keys_to_nums[key]
             in_list = false
             if num <= #G.hand.cards then
@@ -41,7 +46,33 @@ function Controller.key_press_update(self, key, dt)
                 end
             end
         end
+        if tableContains(keys_to_ui, key) then
+            if keys_to_ui[key] == "play_hand" then
+                local play_button = G.buttons:get_UIE_by_ID('play_button')
+                if play_button.config.button == 'play_cards_from_highlighted' then
+                    G.FUNCS.play_cards_from_highlighted()
+                end
+            elseif keys_to_ui[key] == "discard_hand" then
+                local discard_button = G.buttons:get_UIE_by_ID('discard_button')
+                if discard_button.config.button == 'discard_cards_from_highlighted' then
+                    G.FUNCS.discard_cards_from_highlighted()
+                end
+            elseif keys_to_ui[key] == "sort_value" then
+                G.FUNCS.sort_hand_value()
+            elseif keys_to_ui[key] == "sort_rank" then
+                G.FUNCS.sort_hand_suit()
+            end
+        end
     end
+end
+
+function tableContains(table, key)
+  for k,v in pairs(table) do
+    if k == key then
+        return true
+    end
+  end
+  return false
 end
 
 ----------------------------------------------
