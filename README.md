@@ -1,4 +1,4 @@
-# [WIP] Balatro QOL
+# [WIP] Milck's QOL
 Mod for [Balatro](https://store.steampowered.com/app/2379780/Balatro/)
 
 ## Key Binder
