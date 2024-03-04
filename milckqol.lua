@@ -25,6 +25,7 @@ function Controller.key_press_update(self, key, dt)
         ["x"] = "sort_rank",
         ["return"] = "play_hand",
         ["space"] = "discard_hand",
+        ["a"] = "run_info",
     }
     if G.STATE == G.STATES.SELECTING_HAND then
         if tableContains(keys_to_nums, key) then
@@ -61,6 +62,11 @@ function Controller.key_press_update(self, key, dt)
                 G.FUNCS.sort_hand_value()
             elseif keys_to_ui[key] == "sort_rank" then
                 G.FUNCS.sort_hand_suit()
+            elseif keys_to_ui[key] == "run_info" then
+                local run_info_button = G.HUD:get_UIE_by_ID('run_info_button')
+                if run_info_button.config.button == 'run_info' then
+                    G.FUNCS.run_info()
+                end
             end
         end
     end
