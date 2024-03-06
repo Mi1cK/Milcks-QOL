@@ -66,16 +66,18 @@ function Controller.key_press_update(self, key, dt)
                         table.insert(old, v)
                     end
                 end
-                G.hand:unhighlight_all()
-                for c, v in pairs(G.hand.cards) do
-                    local add = true
-                    for x, y in pairs(old) do
-                        if v == y then
-                            add = false
+                if G.hand.config.card_limit - #old <= 5 then
+                    G.hand:unhighlight_all()
+                    for c, v in pairs(G.hand.cards) do
+                        local add = true
+                        for x, y in pairs(old) do
+                            if v == y then
+                                add = false
+                            end
                         end
-                    end
-                    if add then
-                        G.hand:add_to_highlighted(v)
+                        if add then
+                            G.hand:add_to_highlighted(v)
+                        end
                     end
                 end
             elseif keys_to_ui[key] == "sort_value" then
