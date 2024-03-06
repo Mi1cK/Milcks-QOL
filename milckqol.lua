@@ -25,6 +25,7 @@ function Controller.key_press_update(self, key, dt)
         ["x"] = "sort_rank",
         ["return"] = "play_hand",
         ["space"] = "discard_hand",
+        ["f"] = "flip selection",
         ["a"] = "run_info",
     }
     if G.STATE == G.STATES.SELECTING_HAND then
@@ -57,6 +58,27 @@ function Controller.key_press_update(self, key, dt)
                 local discard_button = G.buttons:get_UIE_by_ID('discard_button')
                 if discard_button.config.button == 'discard_cards_from_highlighted' then
                     G.FUNCS.discard_cards_from_highlighted()
+                end
+            elseif keys_to_ui[key] == "flip selection" then
+                local old = {}
+                for c, v in pairs(G.hand.cards) do
+                    if v.highlighted then
+                        table.insert(old, v)
+                    end
+                end
+                if G.hand.config.card_limit - #old <= 5 then
+                    G.hand:unhighlight_all()
+                    for c, v in pairs(G.hand.cards) do
+                        local add = true
+                        for x, y in pairs(old) do
+                            if v == y then
+                                add = false
+                            end
+                        end
+                        if add then
+                            G.hand:add_to_highlighted(v)
+                        end
+                    end
                 end
             elseif keys_to_ui[key] == "sort_value" then
                 G.FUNCS.sort_hand_value()
